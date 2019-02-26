@@ -406,11 +406,6 @@ class CommitteeManager
         return $this->registry->getRepository(Adherent::class);
     }
 
-    private function getReferentTagRepository(): ReferentTagRepository
-    {
-        return $this->registry->getRepository(ReferentTag::class);
-    }
-
     public function countApprovedCommittees(): int
     {
         return $this->getCommitteeRepository()->countApprovedCommittees();

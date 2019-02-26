@@ -1,0 +1,18 @@
+<div class="">
+    {{ form_start(form) }}
+
+        <div class="">
+            Envoyer un message aux adherents du comité :
+        </div>
+        <div class="l__row l__row--top l__mobile--col">
+            <div class="l__col--grow-1 b__nudge--right">
+                {{ form_row(form.committee, {label: 'Comité', placeholder: 'Choisir un comité'}) }}
+            </div>
+        </div>
+
+        <div class="text--center l__wrapper--500 b__nudge--top-40">
+            <button type="submit" class="btn btn--dual">Filtrer</button>
+            <button type="submit" name="reset" class="btn--as-link b__nudge--left-large text--body text--blue--new">Réinitialiser le filtre</button>
+        </div>
+    {{ form_end(form) }}
+</div>

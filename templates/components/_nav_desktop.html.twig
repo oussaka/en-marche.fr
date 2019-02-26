@@ -1,5 +1,5 @@
 {% set has_role_adherent = is_granted('ROLE_ADHERENT') %}
-
+<h1>Hello</h1>
 <nav class="gtm__navigation__desktop l__wrapper l__row l__row--h-stretch l__hide--on-small-laptop {{ app.user ? '' : 'space--20-0' }}">
     <ul class="list__links list__links--row list__links--no-decor list__links--nav">
         <li>
@@ -164,6 +164,11 @@
             <li>
                 {{ al_committees }}
             </li>
+            {% if enable_canary %}
+                <li>
+                    <a href="{{ path('app_message_committee_list', {prefix: 'espace-animateur/'}) }}">Espace animateur ✨</a>
+                </li>
+            {% endif %}
         {% endif %}
         {% if is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR') %}
             <li>

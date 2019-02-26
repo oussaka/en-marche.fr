@@ -9,7 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class ReferentTagChoiceType extends AbstractType
+class MyReferentTagChoiceType extends AbstractType
 {
     private $tokenStorage;
 

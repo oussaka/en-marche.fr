@@ -12,7 +12,7 @@ use AppBundle\AdherentMessage\Filter\FilterFormFactory;
 use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentMessage\AbstractAdherentMessage;
-use AppBundle\Form\AdherentMessageType;
+use AppBundle\Form\AdherentMessage\AdherentMessageType;
 use AppBundle\Mailchimp\Manager;
 use AppBundle\Repository\AdherentMessageRepository;
 use Doctrine\Common\Persistence\ObjectManager;
