@@ -3,12 +3,12 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\EventCategory;
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadEventCategoryData implements FixtureInterface
+class LoadEventCategoryData extends Fixture
 {
-    const LEGACY_EVENT_CATEGORIES = [
+    public const LEGACY_EVENT_CATEGORIES = [
         'CE001' => 'Kiosque',
         'CE002' => 'Réunion d\'équipe',
         'CE003' => 'Conférence-débat',
@@ -21,7 +21,15 @@ class LoadEventCategoryData implements FixtureInterface
         'CE010' => 'Marche',
         'CE011' => 'Support party',
     ];
-    const HIDDEN_CATEGORY_NAME = 'Catégorie masquée';
+
+    public const EVENT_CATEGORIES_GROUPED = [
+        'ancrage local' => 'event-group-category-1',
+        'projets citoyens' => 'event-group-category-1',
+        'Un An' => 'event-group-category-1',
+        'Débat' => 'event-group-category-2',
+    ];
+
+    public const HIDDEN_CATEGORY_NAME = 'Catégorie masquée';
 
     public function load(ObjectManager $manager)
     {
@@ -29,8 +37,21 @@ class LoadEventCategoryData implements FixtureInterface
             $manager->persist(new EventCategory($name));
         }
 
+        foreach (self::EVENT_CATEGORIES_GROUPED as $name => $group) {
+            $eventCategory = new EventCategory($name);
+            $eventCategory->setEventGroupCategory($this->getReference($group));
+            $manager->persist($eventCategory);
+        }
+
         $manager->persist(new EventCategory(self::HIDDEN_CATEGORY_NAME, EventCategory::DISABLED));
 
         $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        return [
+            LoadEventGroupCategoryData::class,
+        ];
     }
 }

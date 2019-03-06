@@ -4,11 +4,22 @@
 
         {% if search.isTypeEvents() %}
             <div class="search__bar__options__types">
-                <select id="select-event-category" name="{{ constant('PARAMETER_EVENT_CATEGORY', search) }}" class="form">
-                    <option value=""{% if not search.eventCategory %} selected="selected"{% endif %}>Tous les événements</option>
+                <select id="select-event-category" name="{{ constant('PARAMETER_EVENT_CATEGORY', search) }}"
+                        class="form">
+                    <option value=""{% if not search.eventCategory %} selected="selected"{% endif %}>Tous les
+                        événements
+                    </option>
                     <option value="{{ constant('TYPE_CITIZEN_ACTIONS', search) }}">Actions citoyennes</option>
                     {% for category in event_categories %}
-                        <option value="{{ category.id }}"{% if search.eventCategory == category.id %} selected="selected"{% endif %}>{{ category.name }}</option>
+                        {% if category.eventCategories is defined %}
+                            <optgroup label="{{ category.name }}">
+                                {% for category in category.eventCategories %}
+                                    <option value="{{ category.id }}"{% if search.eventCategory == category.id %} selected="selected"{% endif %}>{{ category.name }}</option>
+                                {% endfor %}
+                            </optgroup>
+                            {% else %}
+                            <option value="{{ category.id }}"{% if search.eventCategory == category.id %} selected="selected"{% endif %}>{{ category.name }}</option>
+                        {% endif %}
                     {% endfor %}
                 </select>
             </div>
@@ -24,8 +35,10 @@
             <form>
                 autour de
                 {# this widget will be embedded in the ribbon text #}
-                <input class="search-city" id="search-city" name="{{ constant('PARAMETER_CITY', search) }}" value="{{ search.city }}" placeholder="Ville ou code postal" />
-                <input id="search-type" type="hidden" name="{{ constant('PARAMETER_TYPE', search) }}" value="{{ search.type }}"/>
+                <input class="search-city" id="search-city" name="{{ constant('PARAMETER_CITY', search) }}"
+                       value="{{ search.city }}" placeholder="Ville ou code postal"/>
+                <input id="search-type" type="hidden" name="{{ constant('PARAMETER_TYPE', search) }}"
+                       value="{{ search.type }}"/>
             </form>
         </div>
     </div>

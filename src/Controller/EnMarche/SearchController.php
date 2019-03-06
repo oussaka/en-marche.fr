@@ -51,8 +51,19 @@ class SearchController extends Controller
             $errors[] = $this->get('translator')->trans('search.geocoding.exception');
         }
 
+        $eventCategories = [];
+        /** @var EventCategory[] $categories */
+        $categories = $this->getDoctrine()->getRepository(EventCategory::class)->findAllEnabledOrderedByName();
+        foreach ($categories as $category) {
+            if (null !== $category->getEventGroupCategory()) {
+                $eventCategories[$category->getEventGroupCategory()->getSlug()] = $category->getEventGroupCategory();
+            } else {
+                $eventCategories[$category->getSlug()] = $category;
+            }
+        }
+
         return $this->render('search/search_events.html.twig', [
-            'event_categories' => $this->getDoctrine()->getRepository(EventCategory::class)->findAllEnabledOrderedByName(),
+            'event_categories' => $eventCategories,
             'search' => $search,
             'results' => $results ?? [],
             'errors' => $errors ?? [],

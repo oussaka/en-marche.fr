@@ -21,12 +21,12 @@ class InstitutionalEventCommandType extends BaseEventCommandType
     public const CREATE_VIEW = 'create';
     public const EDIT_VIEW = 'edit';
 
-    public function getParent()
+    public function getParent(): string
     {
         return BaseEventCommandType::class;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name', TextType::class, [
@@ -78,7 +78,7 @@ class InstitutionalEventCommandType extends BaseEventCommandType
         );
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([

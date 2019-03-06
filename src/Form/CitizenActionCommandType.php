@@ -11,12 +11,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CitizenActionCommandType extends AbstractType
 {
-    public function getParent()
+    public function getParent(): string
     {
         return BaseEventCommandType::class;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->remove('capacity')
@@ -26,7 +26,7 @@ class CitizenActionCommandType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
@@ -36,7 +36,7 @@ class CitizenActionCommandType extends AbstractType
         ;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'citizen_action';
     }
