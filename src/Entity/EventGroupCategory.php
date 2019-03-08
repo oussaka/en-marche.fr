@@ -11,7 +11,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\EventGroupCategoryRepository")
  * @ORM\Table(
- *     name="events_groups_categories",
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(name="event_group_category_name_unique", columns="name"),
  *         @ORM\UniqueConstraint(name="event_group_category_slug_unique", columns="slug")
@@ -52,11 +51,9 @@ class EventGroupCategory extends BaseEventCategory
 
     public function removeEventCategory(EventCategory $eventCategory): self
     {
-        if ($this->eventCategories->contains($eventCategory)) {
-            $this->eventCategories->removeElement($eventCategory);
-            if ($eventCategory->getEventGroupCategory() === $this) {
-                $eventCategory->setEventGroupCategory(null);
-            }
+        $this->eventCategories->removeElement($eventCategory);
+        if ($eventCategory->getEventGroupCategory() === $this) {
+            $eventCategory->setEventGroupCategory(null);
         }
 
         return $this;

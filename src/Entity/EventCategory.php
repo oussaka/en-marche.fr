@@ -24,7 +24,7 @@ class EventCategory extends BaseEventCategory
 {
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\EventGroupCategory", inversedBy="eventCategories")
-     * @ORM\JoinColumn(name="event_group_category_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="event_group_category_id", referencedColumnName="id")
      */
     private $eventGroupCategory;
 

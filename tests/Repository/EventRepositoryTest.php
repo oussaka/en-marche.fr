@@ -47,7 +47,7 @@ class EventRepositoryTest extends WebTestCase
         $request = new Request($query);
         $search = $this->get(SearchParametersFilter::class)->handleRequest($request);
 
-        $this->assertSame(8, \count($this->repository->searchAllEvents($search)));
+        $this->assertSame(6, \count($this->repository->searchAllEvents($search)));
 
         $query = [
             'q' => '',
@@ -55,7 +55,7 @@ class EventRepositoryTest extends WebTestCase
             'c' => 'paris',
             't' => 'events',
             'offset' => '0',
-            'ec' => $this->getEventCategoryIdForName(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE003']),
+            'ec' => $this->getEventCategoryIdForName(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['event-category-3']),
         ];
         $request = new Request($query);
         $search = $this->get(SearchParametersFilter::class)->handleRequest($request);

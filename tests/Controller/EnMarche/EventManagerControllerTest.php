@@ -83,7 +83,7 @@ class EventManagerControllerTest extends WebTestCase
             'committee_event' => [
                 'name' => 'écologie, débatons-en !',
                 'description' => 'Cette journée sera consacrée à un grand débat sur la question écologique.',
-                'category' => $this->getEventCategoryIdForName(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE003']),
+                'category' => $this->getEventCategoryIdForName(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['event-category-3']['name']),
                 'address' => [
                     'address' => '6 rue Neyret',
                     'country' => 'FR',

@@ -45,7 +45,7 @@ class Version20170517100000 extends AbstractMigration
     public function preDown(Schema $schema)
     {
         foreach ($this->connection->fetchAll('SELECT id, category_id FROM events') as $event) {
-            $this->events[($event['category_id'] > 9 ? 'CE0' : 'CE00').$event['category_id']][] = $event['id'];
+            $this->events['event-category-'.$event['category_id']][] = $event['id'];
         }
     }
 

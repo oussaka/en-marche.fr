@@ -44,7 +44,7 @@ class EventsControllerTest extends WebTestCase
      */
     public function testApiUpcomingEventsForCategory(string $categoryCode, int $expectedCount)
     {
-        $categoryName = LoadEventCategoryData::LEGACY_EVENT_CATEGORIES[$categoryCode];
+        $categoryName = LoadEventCategoryData::LEGACY_EVENT_CATEGORIES[$categoryCode]['name'];
         $category = $this->getRepository(EventCategory::class)->findOneBy(['name' => $categoryName]);
 
         $this->client->request(Request::METHOD_GET, '/api/events?type='.$category->getId());
@@ -68,9 +68,9 @@ class EventsControllerTest extends WebTestCase
     public function provideApiEventsCategories()
     {
         return [
-            ['CE011', 0],
-            ['CE001', 1],
-            ['CE005', 1],
+            ['event-category-11', 0],
+            ['event-category-1', 1],
+            ['event-category-5', 1],
         ];
     }
 

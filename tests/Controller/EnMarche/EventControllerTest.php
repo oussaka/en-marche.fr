@@ -55,10 +55,14 @@ class EventControllerTest extends AbstractEventControllerTest
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame(4, $crawler->filter('.form__errors')->count());
-        $this->assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('#field-first-name .form__errors > li')->text());
-        $this->assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('#field-last-name .form__errors > li')->text());
-        $this->assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('#field-email-address .form__errors > li')->text());
-        $this->assertSame('L\'acceptation des mentions d\'information est obligatoire pour donner suite à votre demande.', $crawler->filter('#event_registration_personalDataCollection_errors li.form__error')->text());
+        $this->assertSame('Cette valeur ne doit pas être vide.',
+            $crawler->filter('#field-first-name .form__errors > li')->text());
+        $this->assertSame('Cette valeur ne doit pas être vide.',
+            $crawler->filter('#field-last-name .form__errors > li')->text());
+        $this->assertSame('Cette valeur ne doit pas être vide.',
+            $crawler->filter('#field-email-address .form__errors > li')->text());
+        $this->assertSame('L\'acceptation des mentions d\'information est obligatoire pour donner suite à votre demande.',
+            $crawler->filter('#event_registration_personalDataCollection_errors li.form__error')->text());
 
         $this->client->submit($crawler->selectButton("Je m'inscris")->form([
             'event_registration' => [
@@ -71,14 +75,18 @@ class EventControllerTest extends AbstractEventControllerTest
             ],
         ]));
 
-        $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadEventData::EVENT_1_UUID, 'paupau75@example.org'));
-        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(EventRegistrationConfirmationMessage::class, 'paupau75@example.org'));
+        $this->assertInstanceOf(EventRegistration::class,
+            $this->repository->findGuestRegistration(LoadEventData::EVENT_1_UUID, 'paupau75@example.org'));
+        $this->assertCount(1,
+            $this->getEmailRepository()->findRecipientMessages(EventRegistrationConfirmationMessage::class,
+                'paupau75@example.org'));
 
         $crawler = $this->client->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertTrue($this->seeFlashMessage($crawler, "Votre inscription à l'événement est confirmée."));
-        $this->assertContains('Votre participation est bien enregistrée !', $crawler->filter('.committee-event-registration-confirmation p')->text());
+        $this->assertContains('Votre participation est bien enregistrée !',
+            $crawler->filter('.committee-event-registration-confirmation p')->text());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
@@ -107,7 +115,8 @@ class EventControllerTest extends AbstractEventControllerTest
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('Député', $crawler->filter('#field-first-name > input[type="text"]')->attr('value'));
         $this->assertSame('PARIS I', $crawler->filter('#field-last-name > input[type="text"]')->attr('value'));
-        $this->assertSame('deputy@en-marche-dev.fr', $crawler->filter('#field-email-address > input[type="email"]')->attr('value'));
+        $this->assertSame('deputy@en-marche-dev.fr',
+            $crawler->filter('#field-email-address > input[type="email"]')->attr('value'));
         $this->assertSame(1, $crawler->filter('#field-accept-terms')->count());
         // Adherent is already subscribed to mails
         $this->assertSame(0, $crawler->filter('#field-newsletter-subscriber')->count());
@@ -116,14 +125,18 @@ class EventControllerTest extends AbstractEventControllerTest
         $form['event_registration[personalDataCollection]']->tick();
         $this->client->submit($form);
 
-        $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadEventData::EVENT_1_UUID, 'deputy@en-marche-dev.fr'));
-        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(EventRegistrationConfirmationMessage::class, 'deputy@en-marche-dev.fr'));
+        $this->assertInstanceOf(EventRegistration::class,
+            $this->repository->findGuestRegistration(LoadEventData::EVENT_1_UUID, 'deputy@en-marche-dev.fr'));
+        $this->assertCount(1,
+            $this->getEmailRepository()->findRecipientMessages(EventRegistrationConfirmationMessage::class,
+                'deputy@en-marche-dev.fr'));
 
         $crawler = $this->client->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertTrue($this->seeFlashMessage($crawler, "Votre inscription à l'événement est confirmée."));
-        $this->assertContains('Votre participation est bien enregistrée !', $crawler->filter('.committee-event-registration-confirmation p')->text());
+        $this->assertContains('Votre participation est bien enregistrée !',
+            $crawler->filter('.committee-event-registration-confirmation p')->text());
 
         $crawler = $this->client->click($crawler->selectLink('Retour')->link());
 
@@ -140,7 +153,7 @@ class EventControllerTest extends AbstractEventControllerTest
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
 
-        $eventUrl = '/evenements/'.date('Y-m-d', strtotime('+17 days')).'-reunion-de-reflexion-marseillaise';
+        $eventUrl = '/evenements/' . date('Y-m-d', strtotime('+17 days')) . '-reunion-de-reflexion-marseillaise';
         $crawler = $this->client->request('GET', $eventUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -148,13 +161,14 @@ class EventControllerTest extends AbstractEventControllerTest
         $this->assertContains('1 inscrit', $headerText);
         $this->assertNotContains('JE VEUX PARTICIPER', $headerText);
 
-        $crawler = $this->client->request('GET', $eventUrl.'/inscription');
+        $crawler = $this->client->request('GET', $eventUrl . '/inscription');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->assertSame('Benjamin', $crawler->filter('#field-first-name > input[type="text"]')->attr('value'));
         $this->assertSame('Duroc', $crawler->filter('#field-last-name > input[type="text"]')->attr('value'));
-        $this->assertSame('benjyd@aol.com', $crawler->filter('#field-email-address > input[type="email"]')->attr('value'));
+        $this->assertSame('benjyd@aol.com',
+            $crawler->filter('#field-email-address > input[type="email"]')->attr('value'));
 
         $crawler = $this->client->submit($crawler->selectButton("Je m'inscris")->form());
 
@@ -171,7 +185,7 @@ class EventControllerTest extends AbstractEventControllerTest
         $this->assertCount(0, $this->manager->getRepository(EventInvite::class)->findAll());
 
         // Initial form
-        $crawler = $this->client->request(Request::METHOD_GET, $eventUrl.'/invitation');
+        $crawler = $this->client->request(Request::METHOD_GET, $eventUrl . '/invitation');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -183,13 +197,14 @@ class EventControllerTest extends AbstractEventControllerTest
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo($eventUrl.'/invitation/merci', $this->client);
+        $this->assertClientIsRedirectedTo($eventUrl . '/invitation/merci', $this->client);
 
         $crawler = $this->client->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->assertContains('Merci ! Vos 2 invitations ont bien été envoyées !', trim($crawler->filter('.event_invitation-result > p')->text()));
+        $this->assertContains('Merci ! Vos 2 invitations ont bien été envoyées !',
+            trim($crawler->filter('.event_invitation-result > p')->text()));
 
         // Invitation should have been saved
         $this->assertCount(1, $invitations = $this->manager->getRepository(EventInvite::class)->findAll());
@@ -236,7 +251,7 @@ class EventControllerTest extends AbstractEventControllerTest
         $this->assertCount(0, $this->manager->getRepository(EventInvite::class)->findAll());
 
         // Initial form
-        $crawler = $this->client->request(Request::METHOD_GET, $eventUrl.'/invitation');
+        $crawler = $this->client->request(Request::METHOD_GET, $eventUrl . '/invitation');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -251,13 +266,14 @@ class EventControllerTest extends AbstractEventControllerTest
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo($eventUrl.'/invitation/merci', $this->client);
+        $this->assertClientIsRedirectedTo($eventUrl . '/invitation/merci', $this->client);
 
         $crawler = $this->client->followRedirect();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->assertContains('Merci ! Vos 2 invitations ont bien été envoyées !', trim($crawler->filter('.event_invitation-result > p')->text()));
+        $this->assertContains('Merci ! Vos 2 invitations ont bien été envoyées !',
+            trim($crawler->filter('.event_invitation-result > p')->text()));
 
         // Invitation should have been saved
         $this->assertCount(1, $invitations = $this->manager->getRepository(EventInvite::class)->findAll());
@@ -305,7 +321,8 @@ class EventControllerTest extends AbstractEventControllerTest
     public function testAttendConfirmationAsAnonymous()
     {
         $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_3_UUID);
-        $registration = $this->getEventRegistrationRepository()->findAdherentRegistration(LoadEventData::EVENT_3_UUID, LoadAdherentData::ADHERENT_7_UUID);
+        $registration = $this->getEventRegistrationRepository()->findAdherentRegistration(LoadEventData::EVENT_3_UUID,
+            LoadAdherentData::ADHERENT_7_UUID);
 
         $this->client->request(Request::METHOD_GET, sprintf('/evenements/%s/confirmation', $event->getSlug()), [
             'registration' => $registration->getUuid()->toString(),
@@ -319,7 +336,8 @@ class EventControllerTest extends AbstractEventControllerTest
         $this->authenticateAsAdherent($this->client, 'francis.brioul@yahoo.com');
 
         $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_3_UUID);
-        $registration = $this->getEventRegistrationRepository()->findAdherentRegistration(LoadEventData::EVENT_3_UUID, LoadAdherentData::ADHERENT_7_UUID);
+        $registration = $this->getEventRegistrationRepository()->findAdherentRegistration(LoadEventData::EVENT_3_UUID,
+            LoadAdherentData::ADHERENT_7_UUID);
 
         $this->client->request(Request::METHOD_GET, sprintf('/evenements/%s/confirmation', $event->getSlug()), [
             'registration' => $registration->getUuid()->toString(),
@@ -343,10 +361,11 @@ class EventControllerTest extends AbstractEventControllerTest
 
     public function testRedirectionEventFromOldUrl()
     {
-        $this->client->request(Request::METHOD_GET, '/evenements/'.LoadEventData::EVENT_5_UUID.'/'.date('Y-m-d', strtotime('+17 days')).'-reunion-de-reflexion-marseillaise');
+        $this->client->request(Request::METHOD_GET, '/evenements/' . LoadEventData::EVENT_5_UUID . '/' . date('Y-m-d',
+                strtotime('+17 days')) . '-reunion-de-reflexion-marseillaise');
 
         $this->assertClientIsRedirectedTo(
-            '/evenements/'.date('Y-m-d', strtotime('+17 days')).'-reunion-de-reflexion-marseillaise',
+            '/evenements/' . date('Y-m-d', strtotime('+17 days')) . '-reunion-de-reflexion-marseillaise',
             $this->client,
             false,
             true
@@ -399,9 +418,7 @@ class EventControllerTest extends AbstractEventControllerTest
         }
 
         $countCategories = \count(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES);
-        $countCategories += \count(LoadEventCategoryData::EVENT_CATEGORIES_GROUPED);
-        $countCategories += 2; // categories disable
-
+        ++$countCategories; // add citizen_action
         $this->assertNotContains('Catégorie masquée', $labels);
         self::assertSame($countCategories, $options->count());
         self::assertSame(2, $optgroup->count());
@@ -452,6 +469,6 @@ class EventControllerTest extends AbstractEventControllerTest
 
     protected function getEventUrl(): string
     {
-        return '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne';
+        return '/evenements/' . date('Y-m-d', strtotime('+3 days')) . '-reunion-de-reflexion-parisienne';
     }
 }

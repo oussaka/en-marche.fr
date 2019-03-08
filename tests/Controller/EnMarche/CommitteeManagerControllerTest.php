@@ -222,7 +222,7 @@ class CommitteeManagerControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $eventCategory = $this->getEventCategoryIdForName(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE003']);
+        $eventCategory = $this->getEventCategoryIdForName(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['event-category-3']['name']);
 
         // Submit the committee event form with invalid data
         $crawler = $this->client->submit($crawler->selectButton('Créer cet événement')->form([
@@ -349,7 +349,7 @@ class CommitteeManagerControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $eventCategory = $this->getEventCategoryIdForName(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE003']);
+        $eventCategory = $this->getEventCategoryIdForName(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['event-category-3']['name']);
 
         $this->client->submit($crawler->selectButton('Créer cet événement')->form([
             'committee_event' => [
